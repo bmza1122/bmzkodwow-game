@@ -5,18 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bmzkodwow</title>
     <style>
+        /* ... (คง style เดิมทั้งหมด) ... */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body, html {
             height: 100%;
             font-family: 'Arial', sans-serif;
             overflow: hidden;
         }
-
         .rainbow-bg {
             background: linear-gradient(45deg, 
                 #ff0000, #ff7f00, #ffff00, #00ff00, 
@@ -30,7 +29,6 @@
             align-items: center;
             position: relative;
         }
-
         @keyframes rainbowShift {
             0% { background-position: 0% 50%; }
             25% { background-position: 100% 50%; }
@@ -38,7 +36,6 @@
             75% { background-position: 0% 100%; }
             100% { background-position: 0% 50%; }
         }
-
         .container {
             text-align: center;
             padding: 40px;
@@ -51,12 +48,10 @@
             max-width: 500px;
             width: 90%;
         }
-
         @keyframes float {
             0%, 100% { transform: translateY(0px) scale(1); }
             50% { transform: translateY(-20px) scale(1.05); }
         }
-
         .name {
             font-size: 4rem;
             font-weight: bold;
@@ -70,13 +65,11 @@
             animation: textShimmer 3s ease-in-out infinite;
             letter-spacing: 3px;
         }
-
         @keyframes textShimmer {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
         .sparkle {
             position: absolute;
             width: 4px;
@@ -85,12 +78,10 @@
             border-radius: 50%;
             animation: sparkle 2s infinite;
         }
-
         @keyframes sparkle {
             0%, 100% { opacity: 0; transform: scale(0); }
             50% { opacity: 1; transform: scale(1); }
         }
-
         .subtitle {
             color: rgba(255, 255, 255, 0.9);
             font-size: 1.2rem;
@@ -98,19 +89,16 @@
             font-style: italic;
             animation: pulse 4s ease-in-out infinite;
         }
-
         @keyframes pulse {
             0%, 100% { opacity: 0.7; }
             50% { opacity: 1; }
         }
-
         .menu-buttons {
             display: flex;
             flex-direction: column;
             gap: 15px;
             margin-top: 30px;
         }
-
         .btn {
             padding: 15px 30px;
             background: rgba(255, 255, 255, 0.2);
@@ -123,29 +111,22 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(5px);
         }
-
         .btn:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
-
-        .form-container {
-            display: none;
-        }
-
+        .form-container { display: none; }
         .form-group {
             margin: 15px 0;
             text-align: left;
         }
-
         .form-group label {
             color: white;
             font-weight: bold;
             display: block;
             margin-bottom: 5px;
         }
-
         .form-group input {
             width: 100%;
             padding: 12px;
@@ -156,35 +137,29 @@
             font-size: 16px;
             backdrop-filter: blur(5px);
         }
-
         .form-group input::placeholder {
             color: rgba(255, 255, 255, 0.7);
         }
-
         .back-btn {
             background: rgba(255, 100, 100, 0.3);
             margin-top: 10px;
         }
-
         .dashboard {
             display: none;
             overflow-y: auto;
             max-height: 80vh;
         }
-
         .welcome-msg {
             color: white;
             font-size: 1.5rem;
             margin-bottom: 20px;
         }
-
         .feature-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
             margin-top: 20px;
         }
-
         .feature-btn {
             padding: 20px;
             background: rgba(255, 255, 255, 0.15);
@@ -195,17 +170,14 @@
             transition: all 0.3s ease;
             font-size: 14px;
         }
-
         .feature-btn:hover {
             background: rgba(255, 255, 255, 0.25);
             transform: scale(1.05);
         }
-
         .drawing-canvas {
             display: none;
             text-align: center;
         }
-
         canvas {
             border: 3px solid rgba(255, 255, 255, 0.5);
             border-radius: 10px;
@@ -213,7 +185,6 @@
             margin: 15px 0;
             cursor: crosshair;
         }
-
         .color-palette {
             display: flex;
             justify-content: center;
@@ -221,7 +192,6 @@
             margin: 15px 0;
             flex-wrap: wrap;
         }
-
         .color-btn {
             width: 30px;
             height: 30px;
@@ -230,20 +200,16 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
-
         .color-btn:hover {
             transform: scale(1.2);
         }
-
         .color-btn.active {
             border: 3px solid #ffff00;
         }
-
         .notes-area {
             display: none;
             text-align: left;
         }
-
         .note-input {
             width: 100%;
             height: 200px;
@@ -256,17 +222,14 @@
             resize: vertical;
             backdrop-filter: blur(5px);
         }
-
         .note-input::placeholder {
             color: rgba(255, 255, 255, 0.7);
         }
-
         .note-list {
             margin-top: 15px;
             max-height: 200px;
             overflow-y: auto;
         }
-
         .note-item {
             background: rgba(255, 255, 255, 0.1);
             padding: 10px;
@@ -274,7 +237,6 @@
             border-radius: 8px;
             border-left: 4px solid #00ff00;
         }
-
         /* Sparkle positions */
         .sparkle:nth-child(1) { top: 20%; left: 15%; animation-delay: 0s; }
         .sparkle:nth-child(2) { top: 30%; right: 20%; animation-delay: 0.5s; }
@@ -282,7 +244,6 @@
         .sparkle:nth-child(4) { bottom: 35%; right: 15%; animation-delay: 1.5s; }
         .sparkle:nth-child(5) { top: 60%; left: 80%; animation-delay: 0.3s; }
         .sparkle:nth-child(6) { top: 15%; left: 70%; animation-delay: 0.8s; }
-
         @media (max-width: 768px) {
             .name {
                 font-size: 2.5rem;
@@ -375,14 +336,14 @@
             <h3 style="color: white; margin-bottom: 15px;">🎨 เกมวาดภาพ</h3>
             <canvas id="canvas" width="400" height="300"></canvas>
             <div class="color-palette">
-                <div class="color-btn active" style="background: #000000" onclick="selectColor('#000000')"></div>
-                <div class="color-btn" style="background: #ff0000" onclick="selectColor('#ff0000')"></div>
-                <div class="color-btn" style="background: #00ff00" onclick="selectColor('#00ff00')"></div>
-                <div class="color-btn" style="background: #0000ff" onclick="selectColor('#0000ff')"></div>
-                <div class="color-btn" style="background: #ffff00" onclick="selectColor('#ffff00')"></div>
-                <div class="color-btn" style="background: #ff00ff" onclick="selectColor('#ff00ff')"></div>
-                <div class="color-btn" style="background: #00ffff" onclick="selectColor('#00ffff')"></div>
-                <div class="color-btn" style="background: #ffffff" onclick="selectColor('#ffffff')"></div>
+                <div class="color-btn active" style="background: #000000" onclick="selectColor('#000000', event)"></div>
+                <div class="color-btn" style="background: #ff0000" onclick="selectColor('#ff0000', event)"></div>
+                <div class="color-btn" style="background: #00ff00" onclick="selectColor('#00ff00', event)"></div>
+                <div class="color-btn" style="background: #0000ff" onclick="selectColor('#0000ff', event)"></div>
+                <div class="color-btn" style="background: #ffff00" onclick="selectColor('#ffff00', event)"></div>
+                <div class="color-btn" style="background: #ff00ff" onclick="selectColor('#ff00ff', event)"></div>
+                <div class="color-btn" style="background: #00ffff" onclick="selectColor('#00ffff', event)"></div>
+                <div class="color-btn" style="background: #ffffff" onclick="selectColor('#ffffff', event)"></div>
             </div>
             <div style="margin-top: 15px;">
                 <button class="btn" onclick="showDashboard()">กลับ</button>
@@ -491,7 +452,16 @@
         function initCanvas() {
             canvas = document.getElementById('canvas');
             ctx = canvas.getContext('2d');
-            
+
+            // ลบ event ซ้ำ
+            canvas.onmousedown = null;
+            canvas.onmousemove = null;
+            canvas.onmouseup = null;
+            canvas.onmouseout = null;
+            canvas.ontouchstart = null;
+            canvas.ontouchmove = null;
+            canvas.ontouchend = null;
+
             canvas.addEventListener('mousedown', startDrawing);
             canvas.addEventListener('mousemove', draw);
             canvas.addEventListener('mouseup', stopDrawing);
@@ -512,7 +482,7 @@
 
         function draw(e) {
             if (!isDrawing) return;
-            
+
             const rect = canvas.getBoundingClientRect();
             ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
             ctx.strokeStyle = currentColor;
@@ -536,10 +506,13 @@
             canvas.dispatchEvent(mouseEvent);
         }
 
-        function selectColor(color) {
+        // แก้ให้รับ event ด้วย
+        function selectColor(color, event) {
             currentColor = color;
             document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if(event) {
+                event.target.classList.add('active');
+            }
         }
 
         function clearDrawing() {
@@ -579,15 +552,17 @@
         function loadNotes() {
             const noteList = document.getElementById('noteList');
             const notes = userNotes[currentUser] || [];
-            
+
             noteList.innerHTML = '';
-            
+
             if (notes.length === 0) {
                 noteList.innerHTML = '<div style="color: rgba(255,255,255,0.7); text-align: center;">ยังไม่มี Note</div>';
                 return;
             }
 
-            notes.reverse().forEach(note => {
+            // ไม่ reverse array ต้นฉบับ เพื่อไม่ให้ note ซ้อนผิด
+            const notesCopy = [...notes].reverse();
+            notesCopy.forEach(note => {
                 const noteDiv = document.createElement('div');
                 noteDiv.className = 'note-item';
                 noteDiv.innerHTML = `
@@ -601,7 +576,7 @@
 
         function deleteNote(noteId) {
             if (!userNotes[currentUser]) return;
-            
+
             userNotes[currentUser] = userNotes[currentUser].filter(note => note.id !== noteId);
             loadNotes();
         }
