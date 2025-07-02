@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bmzkodwow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .rainbow-bg {
+            background: linear-gradient(45deg, 
+                #ff0000, #ff7f00, #ffff00, #00ff00, 
+                #0000ff, #4b0082, #9400d3, #ff1493, 
+                #00ffff, #ff6347, #32cd32, #ff69b4);
+            background-size: 400% 400%;
+            animation: rainbowShift 8s ease-in-out infinite;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        @keyframes rainbowShift {
+            0% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            animation: float 6s ease-in-out infinite;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+
+        .name {
+            font-size: 4rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, 
+                #ffffff, #f0f0f0, #ffffff, #e0e0e0, #ffffff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: textShimmer 3s ease-in-out infinite;
+            letter-spacing: 3px;
+        }
+
+        @keyframes textShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin: 20px 0;
+            font-style: italic;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-container {
+            display: none;
+        }
+
+        .form-group {
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .form-group label {
+            color: white;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+            backdrop-filter: blur(5px);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .back-btn {
+            background: rgba(255, 100, 100, 0.3);
+            margin-top: 10px;
+        }
+
+        .dashboard {
+            display: none;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        .welcome-msg {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .feature-btn {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .feature-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+        }
+
+        .drawing-canvas {
+            display: none;
+            text-align: center;
+        }
+
+        canvas {
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            background: white;
+            margin: 15px 0;
+            cursor: crosshair;
+        }
+
+        .color-palette {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .color-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .color-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .color-btn.active {
+            border: 3px solid #ffff00;
+        }
+
+        .notes-area {
+            display: none;
+            text-align: left;
+        }
+
+        .note-input {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 14px;
+            resize: vertical;
+            backdrop-filter: blur(5px);
+        }
+
+        .note-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .note-list {
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .note-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            border-left: 4px solid #00ff00;
+        }
+
+        /* Sparkle positions */
+        .sparkle:nth-child(1) { top: 20%; left: 15%; animation-delay: 0s; }
+        .sparkle:nth-child(2) { top: 30%; right: 20%; animation-delay: 0.5s; }
+        .sparkle:nth-child(3) { bottom: 25%; left: 25%; animation-delay: 1s; }
+        .sparkle:nth-child(4) { bottom: 35%; right: 15%; animation-delay: 1.5s; }
+        .sparkle:nth-child(5) { top: 60%; left: 80%; animation-delay: 0.3s; }
+        .sparkle:nth-child(6) { top: 15%; left: 70%; animation-delay: 0.8s; }
+
+        @media (max-width: 768px) {
+            .name {
+                font-size: 2.5rem;
+                letter-spacing: 2px;
+            }
+            .container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="rainbow-bg">
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        
+        <!-- หน้าแรก -->
+        <div class="container" id="homeScreen">
+            <h1 class="name">Bmzkodwow</h1>
+            <p class="subtitle">✨ Welcome to my colorful world ✨</p>
+            <div class="menu-buttons">
+                <button class="btn" onclick="showRegister()">🌟 สมัครสมาชิก</button>
+                <button class="btn" onclick="showLogin()">🔑 เข้าสู่ระบบ</button>
+            </div>
+        </div>
+
+        <!-- หน้าสมัครสมาชิก -->
+        <div class="container form-container" id="registerScreen">
+            <h2 class="name" style="font-size: 2.5rem;">สมัครสมาชิก</h2>
+            <form onsubmit="register(event)">
+                <div class="form-group">
+                    <label>ชื่อผู้ใช้:</label>
+                    <input type="text" id="regUsername" placeholder="กรอกชื่อผู้ใช้" required>
+                </div>
+                <div class="form-group">
+                    <label>รหัสผ่าน:</label>
+                    <input type="password" id="regPassword" placeholder="กรอกรหัสผ่าน" required>
+                </div>
+                <button type="submit" class="btn">สมัครสมาชิก</button>
+                <button type="button" class="btn back-btn" onclick="showHome()">กลับ</button>
+            </form>
+        </div>
+
+        <!-- หน้าเข้าสู่ระบบ -->
+        <div class="container form-container" id="loginScreen">
+            <h2 class="name" style="font-size: 2.5rem;">เข้าสู่ระบบ</h2>
+            <form onsubmit="login(event)">
+                <div class="form-group">
+                    <label>ชื่อผู้ใช้:</label>
+                    <input type="text" id="loginUsername" placeholder="กรอกชื่อผู้ใช้" required>
+                </div>
+                <div class="form-group">
+                    <label>รหัสผ่าน:</label>
+                    <input type="password" id="loginPassword" placeholder="กรอกรหัสผ่าน" required>
+                </div>
+                <button type="submit" class="btn">เข้าสู่ระบบ</button>
+                <button type="button" class="btn back-btn" onclick="showHome()">กลับ</button>
+            </form>
+        </div>
+
+        <!-- หน้า Dashboard -->
+        <div class="container dashboard" id="dashboardScreen">
+            <div class="welcome-msg">สวัสดี <span id="currentUser"></span>! 🎉</div>
+            <div class="feature-grid">
+                <div class="feature-btn" onclick="showDrawing()">
+                    🎨<br>วาดภาพ
+                </div>
+                <div class="feature-btn" onclick="showNotes()">
+                    📝<br>Note Pads
+                </div>
+                <div class="feature-btn" onclick="clearDrawing()">
+                    🗑️<br>ล้างภาพ
+                </div>
+                <div class="feature-btn" onclick="logout()">
+                    🚪<br>ออกจากระบบ
+                </div>
+            </div>
+        </div>
+
+        <!-- หน้าวาดภาพ -->
+        <div class="container drawing-canvas" id="drawingScreen">
+            <h3 style="color: white; margin-bottom: 15px;">🎨 เกมวาดภาพ</h3>
+            <canvas id="canvas" width="400" height="300"></canvas>
+            <div class="color-palette">
+                <div class="color-btn active" style="background: #000000" onclick="selectColor('#000000')"></div>
+                <div class="color-btn" style="background: #ff0000" onclick="selectColor('#ff0000')"></div>
+                <div class="color-btn" style="background: #00ff00" onclick="selectColor('#00ff00')"></div>
+                <div class="color-btn" style="background: #0000ff" onclick="selectColor('#0000ff')"></div>
+                <div class="color-btn" style="background: #ffff00" onclick="selectColor('#ffff00')"></div>
+                <div class="color-btn" style="background: #ff00ff" onclick="selectColor('#ff00ff')"></div>
+                <div class="color-btn" style="background: #00ffff" onclick="selectColor('#00ffff')"></div>
+                <div class="color-btn" style="background: #ffffff" onclick="selectColor('#ffffff')"></div>
+            </div>
+            <div style="margin-top: 15px;">
+                <button class="btn" onclick="showDashboard()">กลับ</button>
+                <button class="btn" onclick="saveDrawing()">บันทึกภาพ</button>
+            </div>
+        </div>
+
+        <!-- หน้า Notes -->
+        <div class="container notes-area" id="notesScreen">
+            <h3 style="color: white; margin-bottom: 15px;">📝 Note Pads</h3>
+            <textarea class="note-input" id="noteInput" placeholder="เขียนบันทึกของคุณที่นี่..."></textarea>
+            <div style="margin: 15px 0;">
+                <button class="btn" onclick="saveNote()">บันทึก Note</button>
+                <button class="btn" onclick="showDashboard()">กลับ</button>
+            </div>
+            <div class="note-list" id="noteList"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = '';
+        let users = {}; // เก็บข้อมูลผู้ใช้
+        let userNotes = {}; // เก็บบันทึกของแต่ละผู้ใช้
+        let isDrawing = false;
+        let currentColor = '#000000';
+        let canvas, ctx;
+
+        // ฟังก์ชันแสดงหน้าต่างๆ
+        function showHome() {
+            hideAllScreens();
+            document.getElementById('homeScreen').style.display = 'block';
+        }
+
+        function showRegister() {
+            hideAllScreens();
+            document.getElementById('registerScreen').style.display = 'block';
+        }
+
+        function showLogin() {
+            hideAllScreens();
+            document.getElementById('loginScreen').style.display = 'block';
+        }
+
+        function showDashboard() {
+            hideAllScreens();
+            document.getElementById('dashboardScreen').style.display = 'block';
+            document.getElementById('currentUser').textContent = currentUser;
+        }
+
+        function showDrawing() {
+            hideAllScreens();
+            document.getElementById('drawingScreen').style.display = 'block';
+            initCanvas();
+        }
+
+        function showNotes() {
+            hideAllScreens();
+            document.getElementById('notesScreen').style.display = 'block';
+            loadNotes();
+        }
+
+        function hideAllScreens() {
+            const screens = ['homeScreen', 'registerScreen', 'loginScreen', 'dashboardScreen', 'drawingScreen', 'notesScreen'];
+            screens.forEach(screen => {
+                document.getElementById(screen).style.display = 'none';
+            });
+        }
+
+        // ระบบสมัครสมาชิกและเข้าสู่ระบบ
+        function register(event) {
+            event.preventDefault();
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+
+            if (users[username]) {
+                alert('ชื่อผู้ใช้นี้มีอยู่แล้ว!');
+                return;
+            }
+
+            users[username] = { password: password };
+            userNotes[username] = [];
+            alert('สมัครสมาชิกสำเร็จ!');
+            showLogin();
+        }
+
+        function login(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!users[username] || users[username].password !== password) {
+                alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!');
+                return;
+            }
+
+            currentUser = username;
+            showDashboard();
+        }
+
+        function logout() {
+            currentUser = '';
+            showHome();
+        }
+
+        // ระบบวาดภาพ
+        function initCanvas() {
+            canvas = document.getElementById('canvas');
+            ctx = canvas.getContext('2d');
+            
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+
+            // สำหรับมือถือ
+            canvas.addEventListener('touchstart', handleTouch);
+            canvas.addEventListener('touchmove', handleTouch);
+            canvas.addEventListener('touchend', stopDrawing);
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.strokeStyle = currentColor;
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
+                                            e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        }
+
+        function selectColor(color) {
+            currentColor = color;
+            document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function clearDrawing() {
+            if (ctx) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        function saveDrawing() {
+            alert('ภาพถูกบันทึกแล้ว! (จำลอง)');
+        }
+
+        // ระบบ Notes
+        function saveNote() {
+            const noteText = document.getElementById('noteInput').value.trim();
+            if (!noteText) {
+                alert('กรุณาเขียนบันทึกก่อน!');
+                return;
+            }
+
+            if (!userNotes[currentUser]) {
+                userNotes[currentUser] = [];
+            }
+
+            const note = {
+                id: Date.now(),
+                text: noteText,
+                date: new Date().toLocaleString('th-TH')
+            };
+
+            userNotes[currentUser].push(note);
+            document.getElementById('noteInput').value = '';
+            loadNotes();
+            alert('บันทึก Note สำเร็จ!');
+        }
+
+        function loadNotes() {
+            const noteList = document.getElementById('noteList');
+            const notes = userNotes[currentUser] || [];
+            
+            noteList.innerHTML = '';
+            
+            if (notes.length === 0) {
+                noteList.innerHTML = '<div style="color: rgba(255,255,255,0.7); text-align: center;">ยังไม่มี Note</div>';
+                return;
+            }
+
+            notes.reverse().forEach(note => {
+                const noteDiv = document.createElement('div');
+                noteDiv.className = 'note-item';
+                noteDiv.innerHTML = `
+                    <div style="font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 5px;">${note.date}</div>
+                    <div style="color: white;">${note.text}</div>
+                    <button onclick="deleteNote(${note.id})" style="background: rgba(255,0,0,0.3); border: none; color: white; padding: 5px 10px; border-radius: 5px; margin-top: 5px; cursor: pointer;">ลบ</button>
+                `;
+                noteList.appendChild(noteDiv);
+            });
+        }
+
+        function deleteNote(noteId) {
+            if (!userNotes[currentUser]) return;
+            
+            userNotes[currentUser] = userNotes[currentUser].filter(note => note.id !== noteId);
+            loadNotes();
+        }
+
+        // เริ่มต้นที่หน้าแรก
+        showHome();
+    </script>
+</body>
+</html>
