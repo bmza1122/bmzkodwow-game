@@ -1,559 +1,361 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bmzkodwow</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html {
-            height: 100%;
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-        }
-        .rainbow-bg {
-            background: linear-gradient(45deg, #232323 0%, #181522 100%);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-        @keyframes rainbowShift {
-            0% { background-position: 0% 50%; }
-            25% { background-position: 100% 50%; }
-            50% { background-position: 100% 100%; }
-            75% { background-position: 0% 100%; }
-            100% { background-position: 0% 50%; }
-        }
-        .container {
-            text-align: center;
-            padding: 40px;
-            border-radius: 20px;
-            background: rgba(40, 40, 40, 0.85);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255,255,255,0.07);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-            animation: float 6s ease-in-out infinite;
-            max-width: 500px;
-            width: 90%;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-20px) scale(1.05); }
-        }
-        .name {
-            font-size: 3.2rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #fff, #d1d1d1, #fff, #e0e0e0, #fff);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.25);
-            animation: textShimmer 3s ease-in-out infinite;
-            letter-spacing: 3px;
-        }
-        @keyframes textShimmer {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .sparkle { display:none; }
-        .subtitle {
-            color: #dbdbdb;
-            font-size: 1.2rem;
-            margin: 20px 0;
-            font-style: italic;
-            animation: pulse 4s ease-in-out infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
-        }
-        .menu-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 30px;
-        }
-        .btn {
-            padding: 15px 30px;
-            background: rgba(60, 60, 60, 0.7);
-            color: #fff;
-            border: 2px solid rgba(255,255,255,0.12);
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-        .btn:hover {
-            background: rgba(120, 120, 120, 0.45);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-        .form-container { display: none; }
-        .form-group {
-            margin: 15px 0;
-            text-align: left;
-        }
-        .form-group label {
-            color: #f5f5f5;
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            background: #22232a;
-            color: #fff;
-            font-size: 16px;
-            backdrop-filter: blur(5px);
-        }
-        .form-group input::placeholder {
-            color: rgba(255,255,255,0.7);
-        }
-        .back-btn {
-            background: rgba(255, 100, 100, 0.35);
-            margin-top: 10px;
-        }
-        .dashboard {
-            display: none;
-            overflow-y: auto;
-            max-height: 80vh;
-        }
-        .welcome-msg {
-            color: #fff;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-        }
-        .feature-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .feature-btn {
-            padding: 20px;
-            background: rgba(80, 80, 80, 0.25);
-            border: 2px solid rgba(255,255,255,0.10);
-            border-radius: 15px;
-            color: #fff;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
-        .feature-btn:hover {
-            background: rgba(110, 110, 110, 0.28);
-            transform: scale(1.05);
-        }
-        .drawing-canvas {
-            display: none;
-            text-align: center;
-        }
-        canvas {
-            border: 3px solid rgba(255,255,255,0.35);
-            border-radius: 10px;
-            background: #fff;
-            margin: 15px 0;
-            cursor: crosshair;
-        }
-        .color-palette {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 15px 0;
-            flex-wrap: wrap;
-        }
-        .color-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: 2px solid white;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .color-btn:hover {
-            transform: scale(1.2);
-        }
-        .color-btn.active {
-            border: 3px solid #ffff00;
-        }
-        .color-btn.eraser {
-            background: repeating-linear-gradient(135deg, #fff 0 10px, #eee 10px 20px) !important;
-            border: 2px dashed #888;
-        }
-        .notes-area {
-            display: none;
-            text-align: left;
-        }
-        .note-input {
-            width: 100%;
-            height: 200px;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            background: #232323;
-            color: #fff;
-            font-size: 14px;
-            resize: vertical;
-            backdrop-filter: blur(5px);
-        }
-        .note-input::placeholder {
-            color: rgba(255,255,255,0.7);
-        }
-        .note-list {
-            margin-top: 15px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        .note-item {
-            background: rgba(255,255,255,0.07);
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 8px;
-            border-left: 4px solid #00ff00;
-        }
-        @media (max-width: 768px) {
-            .name {
-                font-size: 2.5rem;
-                letter-spacing: 2px;
-            }
-            .container {
-                padding: 30px 20px;
-                margin: 20px;
-            }
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bmzkodwow</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body, html {
+      height: 100%;
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
+    }
+    .rainbow-bg {
+      background: linear-gradient(45deg, #232323 0%, #181522 100%);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    @keyframes rainbowShift {
+      0% { background-position: 0% 50%; }
+      25% { background-position: 100% 50%; }
+      50% { background-position: 100% 100%; }
+      75% { background-position: 0% 100%; }
+      100% { background-position: 0% 50%; }
+    }
+    .container {
+      text-align: center;
+      padding: 40px;
+      border-radius: 20px;
+      background: rgba(40, 40, 40, 0.85);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255,255,255,0.07);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+      animation: float 6s ease-in-out infinite;
+      max-width: 500px;
+      width: 90%;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-20px) scale(1.05); }
+    }
+    .name {
+      font-size: 3.2rem;
+      font-weight: bold;
+      background: linear-gradient(45deg, #fff, #d1d1d1, #fff, #e0e0e0, #fff);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.25);
+      animation: textShimmer 3s ease-in-out infinite;
+      letter-spacing: 3px;
+    }
+    @keyframes textShimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .subtitle {
+      color: #dbdbdb;
+      font-size: 1.2rem;
+      margin: 20px 0;
+      font-style: italic;
+      animation: pulse 4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+    .menu-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    .btn {
+      padding: 15px 30px;
+      background: rgba(60, 60, 60, 0.7);
+      color: #fff;
+      border: 2px solid rgba(255,255,255,0.12);
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+    .btn:hover {
+      background: rgba(120, 120, 120, 0.45);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+    .form-container { display: none; }
+    .form-group {
+      margin: 15px 0;
+      text-align: left;
+    }
+    .form-group label {
+      color: #f5f5f5;
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: #22232a;
+      color: #fff;
+      font-size: 16px;
+      backdrop-filter: blur(5px);
+    }
+    .form-group input::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+    .back-btn {
+      background: rgba(255, 100, 100, 0.35);
+      margin-top: 10px;
+    }
+    .dashboard {
+      display: none;
+      overflow-y: auto;
+      max-height: 80vh;
+    }
+    .welcome-msg {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .feature-btn {
+      padding: 20px;
+      background: rgba(80, 80, 80, 0.25);
+      border: 2px solid rgba(255,255,255,0.10);
+      border-radius: 15px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .feature-btn:hover {
+      background: rgba(110, 110, 110, 0.28);
+      transform: scale(1.05);
+    }
+    .drawing-canvas {
+      display: none;
+      text-align: center;
+    }
+    canvas {
+      border: 3px solid rgba(255,255,255,0.35);
+      border-radius: 10px;
+      background: #fff;
+      margin: 15px 0;
+      cursor: crosshair;
+    }
+    .color-palette {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 15px 0;
+      flex-wrap: wrap;
+    }
+    .color-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid white;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .color-btn:hover {
+      transform: scale(1.2);
+    }
+    .color-btn.active {
+      border: 3px solid #ffff00;
+    }
+    .color-btn.eraser {
+      background: repeating-linear-gradient(135deg, #fff 0 10px, #eee 10px 20px) !important;
+      border: 2px dashed #888;
+    }
+    @media (max-width: 768px) {
+      .name {
+        font-size: 2.5rem;
+        letter-spacing: 2px;
+      }
+      .container {
+        padding: 30px 20px;
+        margin: 20px;
+      }
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="rainbow-bg">
-        <!-- sparkle (no display) -->
-        <!-- หน้าแรก -->
-        <div class="container" id="homeScreen">
-            <h1 class="name">Bmzkodwow</h1>
-            <p class="subtitle">✨ Welcome to my colorful world ✨</p>
-            <div class="menu-buttons">
-                <button class="btn" onclick="showRegister()">🌟 สมัครสมาชิก</button>
-                <button class="btn" onclick="showLogin()">🔑 เข้าสู่ระบบ</button>
-            </div>
-        </div>
+  <div class="rainbow-bg">
 
-        <!-- หน้าสมัครสมาชิก -->
-        <div class="container form-container" id="registerScreen">
-            <h2 class="name" style="font-size: 2.5rem;">สมัครสมาชิก</h2>
-            <form onsubmit="register(event)">
-                <div class="form-group">
-                    <label>ชื่อผู้ใช้:</label>
-                    <input type="text" id="regUsername" placeholder="กรอกชื่อผู้ใช้" required>
-                </div>
-                <div class="form-group">
-                    <label>รหัสผ่าน:</label>
-                    <input type="password" id="regPassword" placeholder="กรอกรหัสผ่าน" required>
-                </div>
-                <button type="submit" class="btn">สมัครสมาชิก</button>
-                <button type="button" class="btn back-btn" onclick="showHome()">กลับ</button>
-            </form>
-        </div>
-
-        <!-- หน้าเข้าสู่ระบบ -->
-        <div class="container form-container" id="loginScreen">
-            <h2 class="name" style="font-size: 2.5rem;">เข้าสู่ระบบ</h2>
-            <form onsubmit="login(event)">
-                <div class="form-group">
-                    <label>ชื่อผู้ใช้:</label>
-                    <input type="text" id="loginUsername" placeholder="กรอกชื่อผู้ใช้" required>
-                </div>
-                <div class="form-group">
-                    <label>รหัสผ่าน:</label>
-                    <input type="password" id="loginPassword" placeholder="กรอกรหัสผ่าน" required>
-                </div>
-                <button type="submit" class="btn">เข้าสู่ระบบ</button>
-                <button type="button" class="btn back-btn" onclick="showHome()">กลับ</button>
-            </form>
-        </div>
-
-        <!-- หน้า Dashboard -->
-        <div class="container dashboard" id="dashboardScreen">
-            <div class="welcome-msg">สวัสดี <span id="currentUser"></span>! 🎉</div>
-            <div class="feature-grid">
-                <div class="feature-btn" onclick="showDrawing()">
-                    🎨<br>วาดภาพ
-                </div>
-                <div class="feature-btn" onclick="showNotes()">
-                    📝<br>Note Pads
-                </div>
-                <div class="feature-btn" onclick="clearDrawing()">
-                    🗑️<br>ล้างภาพ
-                </div>
-                <div class="feature-btn" onclick="logout()">
-                    🚪<br>ออกจากระบบ
-                </div>
-            </div>
-        </div>
-
-        <!-- หน้าวาดภาพ -->
-        <div class="container drawing-canvas" id="drawingScreen">
-            <h3 style="color: white; margin-bottom: 15px;">🎨 เกมวาดภาพ</h3>
-            <canvas id="canvas" width="400" height="300"></canvas>
-            <div class="color-palette">
-                <div class="color-btn active" style="background: #000000" onclick="selectColor('#000000', event)"></div>
-                <div class="color-btn" style="background: #ff0000" onclick="selectColor('#ff0000', event)"></div>
-                <div class="color-btn" style="background: #00ff00" onclick="selectColor('#00ff00', event)"></div>
-                <div class="color-btn" style="background: #0000ff" onclick="selectColor('#0000ff', event)"></div>
-                <div class="color-btn" style="background: #ffff00" onclick="selectColor('#ffff00', event)"></div>
-                <div class="color-btn" style="background: #ff00ff" onclick="selectColor('#ff00ff', event)"></div>
-                <div class="color-btn" style="background: #00ffff" onclick="selectColor('#00ffff', event)"></div>
-                <div class="color-btn" style="background: #ffffff" onclick="selectColor('#ffffff', event)"></div>
-                <div class="color-btn eraser" title="ยางลบ" onclick="selectEraser(event)"></div>
-            </div>
-            <div style="margin-top: 15px;">
-                <button class="btn" onclick="showDashboard()">กลับ</button>
-                <button class="btn" onclick="saveDrawing()">บันทึกภาพ</button>
-            </div>
-        </div>
-
-        <!-- หน้า Notes -->
-        <div class="container notes-area" id="notesScreen">
-            <h3 style="color: white; margin-bottom: 15px;">📝 Note Pads</h3>
-            <textarea class="note-input" id="noteInput" placeholder="เขียนบันทึกของคุณที่นี่..."></textarea>
-            <div style="margin: 15px 0;">
-                <button class="btn" onclick="saveNote()">บันทึก Note</button>
-                <button class="btn" onclick="showDashboard()">กลับ</button>
-            </div>
-            <div class="note-list" id="noteList"></div>
-        </div>
+    <!-- หน้าแรก -->
+    <div class="container" id="homeScreen">
+      <h1 class="name">Bmzkodwow</h1>
+      <p class="subtitle">✨ Welcome to my colorful world ✨</p>
+      <div class="menu-buttons">
+        <button class="btn" onclick="showRegister()">🌟 สมัครสมาชิก</button>
+        <button class="btn" onclick="showLogin()">🔑 เข้าสู่ระบบ</button>
+      </div>
     </div>
 
-    <script>
-        // --- localStorage helpers ---
-        function saveData() {
-            localStorage.setItem('users', JSON.stringify(users));
-            localStorage.setItem('userNotes', JSON.stringify(userNotes));
-        }
-        function loadData() {
-            users = JSON.parse(localStorage.getItem('users') || '{}');
-            userNotes = JSON.parse(localStorage.getItem('userNotes') || '{}');
-        }
+    <!-- สมัครสมาชิก -->
+    <div class="container form-container" id="registerScreen">
+      <h2 class="name" style="font-size: 2.5rem;">สมัครสมาชิก</h2>
+      <form onsubmit="register(event)">
+        <div class="form-group">
+          <label>ชื่อผู้ใช้:</label>
+          <input type="text" id="regUsername" required />
+        </div>
+        <div class="form-group">
+          <label>รหัสผ่าน:</label>
+          <input type="password" id="regPassword" required />
+        </div>
+        <button type="submit" class="btn">สมัครสมาชิก</button>
+        <button type="button" class="btn back-btn" onclick="showHome()">กลับ</button>
+      </form>
+    </div>
 
-        let currentUser = '';
-        let users = {};
-        let userNotes = {};
-        let isDrawing = false;
-        let currentColor = '#000000';
-        let canvas, ctx;
+    <!-- เข้าสู่ระบบ -->
+    <div class="container form-container" id="loginScreen">
+      <h2 class="name" style="font-size: 2.5rem;">เข้าสู่ระบบ</h2>
+      <form onsubmit="login(event)">
+        <div class="form-group">
+          <label>ชื่อผู้ใช้:</label>
+          <input type="text" id="loginUsername" required />
+        </div>
+        <div class="form-group">
+          <label>รหัสผ่าน:</label>
+          <input type="password" id="loginPassword" required />
+        </div>
+        <button type="submit" class="btn">เข้าสู่ระบบ</button>
+        <button type="button" class="btn back-btn" onclick="showHome()">กลับ</button>
+      </form>
+    </div>
 
-        // --- Drawing State for Eraser ---
-        let isEraser = false;
+    <!-- dashboard -->
+    <div class="container dashboard" id="dashboard">
+      <p class="welcome-msg" id="welcomeUser"></p>
+      <div class="feature-grid">
+        <button class="feature-btn" onclick="showDrawingCanvas()">🖌 วาดรูป</button>
+        <button class="feature-btn" onclick="showHome()">🚪 ออกจากระบบ</button>
+      </div>
+    </div>
 
-        // --- Show/Hide Screens ---
-        function showHome() {
-            hideAllScreens();
-            document.getElementById('homeScreen').style.display = 'block';
-        }
-        function showRegister() {
-            hideAllScreens();
-            document.getElementById('registerScreen').style.display = 'block';
-        }
-        function showLogin() {
-            hideAllScreens();
-            document.getElementById('loginScreen').style.display = 'block';
-        }
-        function showDashboard() {
-            hideAllScreens();
-            document.getElementById('dashboardScreen').style.display = 'block';
-            document.getElementById('currentUser').textContent = currentUser;
-        }
-        function showDrawing() {
-            hideAllScreens();
-            document.getElementById('drawingScreen').style.display = 'block';
-            initCanvas();
-        }
-        function showNotes() {
-            hideAllScreens();
-            document.getElementById('notesScreen').style.display = 'block';
-            loadNotes();
-        }
-        function hideAllScreens() {
-            const screens = ['homeScreen', 'registerScreen', 'loginScreen', 'dashboardScreen', 'drawingScreen', 'notesScreen'];
-            screens.forEach(screen => {
-                document.getElementById(screen).style.display = 'none';
-            });
-        }
+    <!-- วาดรูป -->
+    <div class="container drawing-canvas" id="drawingCanvas">
+      <h2 class="name" style="font-size: 2rem;">วาดรูป</h2>
+      <div class="color-palette">
+        <div class="color-btn" style="background: black;" onclick="setColor('#000000', this)"></div>
+        <div class="color-btn" style="background: red;" onclick="setColor('#ff0000', this)"></div>
+        <div class="color-btn" style="background: blue;" onclick="setColor('#0000ff', this)"></div>
+        <div class="color-btn" style="background: green;" onclick="setColor('#00ff00', this)"></div>
+        <div class="color-btn eraser" onclick="setColor('#ffffff', this)"></div>
+      </div>
+      <canvas id="canvas" width="400" height="300"></canvas>
+      <button class="btn back-btn" onclick="showDashboard('')">🔙 กลับ</button>
+    </div>
 
-        // --- Auth ---
-        function register(event) {
-            event.preventDefault();
-            const username = document.getElementById('regUsername').value;
-            const password = document.getElementById('regPassword').value;
-            if (users[username]) {
-                alert('ชื่อผู้ใช้นี้มีอยู่แล้ว!');
-                return;
-            }
-            users[username] = { password: password };
-            userNotes[username] = [];
-            saveData();
-            alert('สมัครสมาชิกสำเร็จ!');
-            showLogin();
-        }
-        function login(event) {
-            event.preventDefault();
-            const username = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
-            if (!users[username] || users[username].password !== password) {
-                alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!');
-                return;
-            }
-            currentUser = username;
-            showDashboard();
-        }
-        function logout() {
-            currentUser = '';
-            showHome();
-        }
+  </div>
 
-        // --- Drawing ---
-        function initCanvas() {
-            canvas = document.getElementById('canvas');
-            ctx = canvas.getContext('2d');
-            // Remove previous events (prevent duplicate listeners)
-            canvas.onmousedown = null; canvas.onmousemove = null; canvas.onmouseup = null; canvas.onmouseout = null;
-            canvas.ontouchstart = null; canvas.ontouchmove = null; canvas.ontouchend = null;
-            canvas.removeEventListener('mousedown', startDrawing);
-            canvas.removeEventListener('mousemove', draw);
-            canvas.removeEventListener('mouseup', stopDrawing);
-            canvas.removeEventListener('mouseout', stopDrawing);
-            canvas.removeEventListener('touchstart', handleTouch);
-            canvas.removeEventListener('touchmove', handleTouch);
-            canvas.removeEventListener('touchend', stopDrawing);
-            // Drawing events
-            canvas.addEventListener('mousedown', startDrawing);
-            canvas.addEventListener('mousemove', draw);
-            canvas.addEventListener('mouseup', stopDrawing);
-            canvas.addEventListener('mouseout', stopDrawing);
-            canvas.addEventListener('touchstart', handleTouch);
-            canvas.addEventListener('touchmove', handleTouch);
-            canvas.addEventListener('touchend', stopDrawing);
-            // Reset tool
-            isDrawing = false;
-            isEraser = false;
-            currentColor = '#000000';
-            // Reset color selection
-            document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector('.color-btn[style*="background: #000000"]').classList.add('active');
-        }
-        function startDrawing(e) {
-            isDrawing = true;
-            const rect = canvas.getBoundingClientRect();
-            let x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-            let y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-        }
-        function draw(e) {
-            if (!isDrawing) return;
-            const rect = canvas.getBoundingClientRect();
-            let x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-            let y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-            ctx.lineTo(x, y);
-            ctx.strokeStyle = isEraser ? '#fff' : currentColor;
-            ctx.lineWidth = isEraser ? 18 : 2.5;
-            ctx.lineCap = 'round';
-            ctx.stroke();
-        }
-        function stopDrawing() {
-            isDrawing = false;
-            ctx.closePath();
-        }
-        function handleTouch(e) {
-            e.preventDefault();
-            if (e.type === 'touchstart') startDrawing(e);
-            if (e.type === 'touchmove') draw(e);
-            if (e.type === 'touchend') stopDrawing();
-        }
-        function selectColor(color, event) {
-            isEraser = false;
-            currentColor = color;
-            document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
-            if(event) event.target.classList.add('active');
-        }
-        function selectEraser(event) {
-            isEraser = true;
-            document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
-            if(event) event.target.classList.add('active');
-        }
-        function clearDrawing() {
-            if (ctx) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-            }
-        }
-        function saveDrawing() {
-            if (!canvas) return;
-            const link = document.createElement('a');
-            link.download = 'drawing.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        }
+  <!-- SCRIPT -->
+  <script>
+    let currentColor = "#000000";
+    let isDrawing = false;
+    let context;
 
-        // --- Notes ---
-        function saveNote() {
-            const noteText = document.getElementById('noteInput').value.trim();
-            if (!noteText) {
-                alert('กรุณาเขียนบันทึกก่อน!');
-                return;
-            }
-            if (!userNotes[currentUser]) {
-                userNotes[currentUser] = [];
-            }
-            const note = {
-                id: Date.now(),
-                text: noteText,
-                date: new Date().toLocaleString('th-TH')
-            };
-            userNotes[currentUser].push(note);
-            document.getElementById('noteInput').value = '';
-            saveData();
-            loadNotes();
-            alert('บันทึก Note สำเร็จ!');
-        }
-        function loadNotes() {
-            const noteList = document.getElementById('noteList');
-            const notes = userNotes[currentUser] || [];
-            noteList.innerHTML = '';
-            if (notes.length === 0) {
-                noteList.innerHTML = '<div style="color: rgba(255,255,255,0.7); text-align: center;">ยังไม่มี Note</div>';
-                return;
-            }
-            const notesCopy = [...notes].reverse();
-            notesCopy.forEach(note => {
-                const noteDiv = document.createElement('div');
-                noteDiv.className = 'note-item';
-                noteDiv.innerHTML = `
-                    <div style="font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 5px;">${note.date}</div>
-                    <div style="color: #fff;">${note.text}</div>
-                    <button onclick="deleteNote(${note.id})" style="background: rgba(255,0,0,0.3); border: none; color: white; padding: 5px 10px; border-radius: 5px; margin-top: 5px; cursor: pointer;">ลบ</button>
-                `;
-                noteList.appendChild(noteDiv);
-            });
-        }
-        function deleteNote(noteId) {
-            if (!userNotes[currentUser]) return;
-            userNotes[currentUser] = userNotes[currentUser].filter(note => note.id !== noteId);
-            saveData();
-            loadNotes();
-        }
+    function hideAll() {
+      document.querySelectorAll(".container").forEach(el => el.style.display = "none");
+    }
 
-        // --- Init ---
-        loadData();
-        showHome();
-    </script>
+    function showHome() {
+      hideAll();
+      document.getElementById("homeScreen").style.display = "block";
+    }
+
+    function showRegister() {
+      hideAll();
+      document.getElementById("registerScreen").style.display = "block";
+    }
+
+    function showLogin() {
+      hideAll();
+      document.getElementById("loginScreen").style.display = "block";
+    }
+
+    function showDashboard(username) {
+      hideAll();
+      document.getElementById("dashboard").style.display = "block";
+      document.getElementById("welcomeUser").innerText = "ยินดีต้อนรับ " + username + "!";
+    }
+
+    function register(event) {
+      event.preventDefault();
+      const username = document.getElementById("regUsername").value;
+      const password = document.getElementById("regPassword").value;
+      if (localStorage.getItem(username)) {
+        alert("ชื่อผู้ใช้นี้มีอยู่แล้ว");
+      } else {
+        localStorage.setItem(username, JSON.stringify({ password }));
+        alert("สมัครสมาชิกเรียบร้อยแล้ว");
+        showLogin();
+      }
+    }
+
+    function login(event) {
+      event.preventDefault();
+      const username = document.getElementById("loginUsername").value;
+      const password = document.getElementById("loginPassword").value;
+      const userData = JSON.parse(localStorage.getItem(username));
+      if (userData && userData.password === password) {
+        showDashboard(username);
+      } else {
+        alert("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+      }
+    }
+
+    function showDrawingCanvas() {
+      hideAll();
+      document.getElementById("drawingCanvas").style.display = "block";
+      const canvas = document.getElementById("canvas");
+      context = canvas.getContext("2d");
+
+      canvas.onmousedown = () => isDrawing = true;
+      canvas.onmouseup = () => isDrawing = false;
+      canvas.onmousemove = (e) => {
+        if (!isDrawing) return;
+        const rect = canvas.getBoundingClientRect();
+        context.fillStyle = currentColor;
+        context.beginPath();
+        context.arc(e.clientX - rect.left, e.clientY - rect.top, 4, 0, Math.PI * 2);
+        context.fill();
+      };
+    }
+
+    function setColor(color, el) {
+      currentColor = color;
+      document.querySelectorAll(".color-btn").forEach(btn => btn.classList.remove("active"));
+      el.classList.add("active");
+    }
+
+    // เริ่มหน้าแรก
+    showHome();
+  </script>
 </body>
 </html>
