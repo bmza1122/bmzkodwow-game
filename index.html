@@ -70,7 +70,42 @@
   </style>
 </head>
 <body>
-  <div class="container" id="drawingCanvas">
+  <div class="container" id="homeScreen">
+    <h1 class="name">Bmzkodwow</h1>
+    <p class="subtitle">✨ Welcome to my colorful world ✨</p>
+    <div class="menu-buttons">
+      <button class="btn" onclick="showRegister()">🌟 สมัครสมาชิก</button>
+      <button class="btn" onclick="showLogin()">🔑 เข้าสู่ระบบ</button>
+    </div>
+  </div>
+
+  <div class="container" id="registerScreen" style="display:none">
+    <h2>สมัครสมาชิก</h2>
+    <form onsubmit="register(event)">
+      <input type="text" id="regUsername" placeholder="ชื่อผู้ใช้" required><br><br>
+      <input type="password" id="regPassword" placeholder="รหัสผ่าน" required><br><br>
+      <button class="btn" type="submit">สมัครสมาชิก</button>
+      <button class="btn back-btn" type="button" onclick="showHome()">กลับ</button>
+    </form>
+  </div>
+
+  <div class="container" id="loginScreen" style="display:none">
+    <h2>เข้าสู่ระบบ</h2>
+    <form onsubmit="login(event)">
+      <input type="text" id="loginUsername" placeholder="ชื่อผู้ใช้" required><br><br>
+      <input type="password" id="loginPassword" placeholder="รหัสผ่าน" required><br><br>
+      <button class="btn" type="submit">เข้าสู่ระบบ</button>
+      <button class="btn back-btn" type="button" onclick="showHome()">กลับ</button>
+    </form>
+  </div>
+
+  <div class="container" id="dashboard" style="display:none">
+    <p id="welcomeUser"></p>
+    <button class="btn" onclick="showDrawingCanvas()">🖌 วาดรูป</button>
+    <button class="btn back-btn" onclick="showHome()">🚪 ออกจากระบบ</button>
+  </div>
+
+  <div class="container" id="drawingCanvas" style="display:none">
     <h2 class="name" style="font-size: 2rem;">วาดรูป</h2>
     <div class="color-palette">
       <div class="color-btn" style="background: black;" onclick="setColor('#000000', this)"></div>
@@ -81,13 +116,14 @@
     </div>
     <canvas id="canvas" width="400" height="300"></canvas><br>
     <button class="btn save-btn" onclick="saveDrawing()">📀 บันทึกรูป</button>
-    <button class="btn back-btn" onclick="showDashboard('')">🔙 กลับ</button>
+    <button class="btn back-btn" onclick="showDashboard(currentUser)">🔙 กลับ</button>
   </div>
 
   <script>
     let currentColor = "#000000";
     let isDrawing = false;
     let context;
+    let currentUser = "";
 
     function hideAll() {
       document.querySelectorAll(".container").forEach(el => el.style.display = "none");
@@ -95,11 +131,49 @@
 
     function showHome() {
       hideAll();
-      document.getElementById("drawingCanvas").style.display = "block";
+      document.getElementById("homeScreen").style.display = "block";
+    }
+
+    function showRegister() {
+      hideAll();
+      document.getElementById("registerScreen").style.display = "block";
+    }
+
+    function showLogin() {
+      hideAll();
+      document.getElementById("loginScreen").style.display = "block";
     }
 
     function showDashboard(username) {
-      alert('กลับไปยัง Dashboard (mocked)');
+      hideAll();
+      currentUser = username;
+      document.getElementById("dashboard").style.display = "block";
+      document.getElementById("welcomeUser").innerText = "ยินดีต้อนรับ " + username + "!";
+    }
+
+    function register(event) {
+      event.preventDefault();
+      const username = document.getElementById("regUsername").value;
+      const password = document.getElementById("regPassword").value;
+      if (localStorage.getItem(username)) {
+        alert("ชื่อผู้ใช้นี้มีอยู่แล้ว");
+      } else {
+        localStorage.setItem(username, JSON.stringify({ password }));
+        alert("สมัครสมาชิกเรียบร้อยแล้ว");
+        showLogin();
+      }
+    }
+
+    function login(event) {
+      event.preventDefault();
+      const username = document.getElementById("loginUsername").value;
+      const password = document.getElementById("loginPassword").value;
+      const userData = JSON.parse(localStorage.getItem(username));
+      if (userData && userData.password === password) {
+        showDashboard(username);
+      } else {
+        alert("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+      }
     }
 
     function showDrawingCanvas() {
@@ -108,19 +182,21 @@
       const canvas = document.getElementById("canvas");
       context = canvas.getContext("2d");
 
-      canvas.onmousedown = () => isDrawing = true;
-      canvas.onmouseup = () => isDrawing = false;
-      canvas.onmouseleave = () => isDrawing = false;
-
-      canvas.onmousemove = (e) => {
+      canvas.addEventListener('mousedown', () => isDrawing = true);
+      canvas.addEventListener('mouseup', () => isDrawing = false);
+      canvas.addEventListener('mouseout', () => isDrawing = false);
+      canvas.addEventListener('mousemove', (e) => {
         if (!isDrawing) return;
         const rect = canvas.getBoundingClientRect();
-        context.fillStyle = currentColor;
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
         context.beginPath();
-        context.arc(e.clientX - rect.left, e.clientY - rect.top, 4, 0, Math.PI * 2);
+        context.arc(x, y, 4, 0, Math.PI * 2);
+        context.fillStyle = currentColor;
         context.fill();
-      };
+      });
 
+      // โหลดภาพจาก localStorage
       const saved = localStorage.getItem("savedDrawing");
       if (saved) {
         const img = new Image();
@@ -142,7 +218,7 @@
       alert("✅ รูปวาดถูกบันทึกแล้ว!");
     }
 
-    showDrawingCanvas();
+    showHome();
   </script>
 </body>
 </html>
