@@ -5,34 +5,85 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Bmzkodwow</title>
   <style>
-    /* (เดิมทั้งหมดไม่เปลี่ยน ตัดออกเพื่อย่น) */
-    .save-btn {
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body, html {
+      height: 100%;
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
+      background: linear-gradient(45deg, #2a2a2a, #181818);
+      color: white;
+    }
+    .container {
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      text-align: center;
+      background: rgba(40, 40, 40, 0.9);
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      margin-top: 40px;
+    }
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      background-color: #444;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 10px 5px;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background-color: #666;
+    }
+    .color-palette {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .color-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid white;
+      cursor: pointer;
+    }
+    .color-btn.eraser {
+      background: repeating-linear-gradient(135deg, #fff 0 10px, #eee 10px 20px);
+      border: 2px dashed #888;
+    }
+    canvas {
+      border: 2px solid #aaa;
+      border-radius: 10px;
       margin-top: 10px;
-      background: rgba(100, 255, 100, 0.3);
+      background: white;
+      cursor: crosshair;
+    }
+    .save-btn {
+      background-color: green;
+    }
+    .back-btn {
+      background-color: crimson;
     }
   </style>
 </head>
 <body>
-  <div class="rainbow-bg">
-    <!-- ... (หน้าแรก / สมัคร / เข้าสู่ระบบ / dashboard / วาดรูป) ... -->
-
-    <!-- เพิ่มปุ่มบันทึกรูปในวาดรูป -->
-    <div class="container drawing-canvas" id="drawingCanvas">
-      <h2 class="name" style="font-size: 2rem;">วาดรูป</h2>
-      <div class="color-palette">
-        <div class="color-btn" style="background: black;" onclick="setColor('#000000', this)"></div>
-        <div class="color-btn" style="background: red;" onclick="setColor('#ff0000', this)"></div>
-        <div class="color-btn" style="background: blue;" onclick="setColor('#0000ff', this)"></div>
-        <div class="color-btn" style="background: green;" onclick="setColor('#00ff00', this)"></div>
-        <div class="color-btn eraser" onclick="setColor('#ffffff', this)"></div>
-      </div>
-      <canvas id="canvas" width="400" height="300"></canvas>
-      <button class="btn save-btn" onclick="saveDrawing()">📀 บันทึกรูป</button>
-      <button class="btn back-btn" onclick="showDashboard('')">🔙 กลับ</button>
+  <div class="container" id="drawingCanvas">
+    <h2 class="name" style="font-size: 2rem;">วาดรูป</h2>
+    <div class="color-palette">
+      <div class="color-btn" style="background: black;" onclick="setColor('#000000', this)"></div>
+      <div class="color-btn" style="background: red;" onclick="setColor('#ff0000', this)"></div>
+      <div class="color-btn" style="background: blue;" onclick="setColor('#0000ff', this)"></div>
+      <div class="color-btn" style="background: green;" onclick="setColor('#00ff00', this)"></div>
+      <div class="color-btn eraser" onclick="setColor('#ffffff', this)"></div>
     </div>
+    <canvas id="canvas" width="400" height="300"></canvas><br>
+    <button class="btn save-btn" onclick="saveDrawing()">📀 บันทึกรูป</button>
+    <button class="btn back-btn" onclick="showDashboard('')">🔙 กลับ</button>
   </div>
 
-  <!-- SCRIPT -->
   <script>
     let currentColor = "#000000";
     let isDrawing = false;
@@ -44,48 +95,11 @@
 
     function showHome() {
       hideAll();
-      document.getElementById("homeScreen").style.display = "block";
-    }
-
-    function showRegister() {
-      hideAll();
-      document.getElementById("registerScreen").style.display = "block";
-    }
-
-    function showLogin() {
-      hideAll();
-      document.getElementById("loginScreen").style.display = "block";
+      document.getElementById("drawingCanvas").style.display = "block";
     }
 
     function showDashboard(username) {
-      hideAll();
-      document.getElementById("dashboard").style.display = "block";
-      document.getElementById("welcomeUser").innerText = "ยินดีต้อนรับ " + username + "!";
-    }
-
-    function register(event) {
-      event.preventDefault();
-      const username = document.getElementById("regUsername").value;
-      const password = document.getElementById("regPassword").value;
-      if (localStorage.getItem(username)) {
-        alert("ชื่อผู้ใช้นี้มีอยู่แล้ว");
-      } else {
-        localStorage.setItem(username, JSON.stringify({ password }));
-        alert("สมัครสมาชิกเรียบร้อยแล้ว");
-        showLogin();
-      }
-    }
-
-    function login(event) {
-      event.preventDefault();
-      const username = document.getElementById("loginUsername").value;
-      const password = document.getElementById("loginPassword").value;
-      const userData = JSON.parse(localStorage.getItem(username));
-      if (userData && userData.password === password) {
-        showDashboard(username);
-      } else {
-        alert("ชื่อผู้ใช้หรือรหัสผานไม่ถูกต้อง");
-      }
+      alert('กลับไปยัง Dashboard (mocked)');
     }
 
     function showDrawingCanvas() {
@@ -96,6 +110,8 @@
 
       canvas.onmousedown = () => isDrawing = true;
       canvas.onmouseup = () => isDrawing = false;
+      canvas.onmouseleave = () => isDrawing = false;
+
       canvas.onmousemove = (e) => {
         if (!isDrawing) return;
         const rect = canvas.getBoundingClientRect();
@@ -105,7 +121,6 @@
         context.fill();
       };
 
-      // โหลดภาพที่บันทึกไว้ (ถ้ามี)
       const saved = localStorage.getItem("savedDrawing");
       if (saved) {
         const img = new Image();
@@ -127,7 +142,7 @@
       alert("✅ รูปวาดถูกบันทึกแล้ว!");
     }
 
-    showHome();
+    showDrawingCanvas();
   </script>
 </body>
 </html>
